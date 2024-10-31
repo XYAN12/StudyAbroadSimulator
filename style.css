@@ -1,25 +1,27 @@
 body {
     margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
+main {
+    flex: 1;
+}
+
 footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
     background-color: #333;
     color: white;
     padding: 10px;
     text-align: center;
 }
 
+
 #statistic {
     display: flex;
     background-color: lightgray;
     padding: 10px;
-    border-radius: 5px;
 }
 
 .left-part, .right-part {
@@ -42,5 +44,59 @@ footer {
 #options{
     text-align: center;
 }
+
+button {
+    background: lightgrey;
+    border: none;
+    color: black;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-width: 150px;
+    text-align: center;
+    flex-grow: 1; /* Allows buttons to grow if space is available */
+}
+
+button:hover {
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem; /* Space between buttons */
+    padding: 1rem; /* Space from the left and right edge of the container */
+    justify-content: center; /* Center the button container */
+    max-width: 1200px; /* Optional: set a max width for larger screens */
+    margin: 0 auto; /* Center the container within the screen */
+    box-sizing: border-box;
+}
+
+.button-container button {
+    flex: 1 1 calc(50% - 1rem); /* Each button takes half the container width on mobile */
+    max-width: calc(50% - 1rem); /* Ensure each button does not exceed half the container */
+    padding: 1rem;
+    box-sizing: border-box;
+    text-align: center;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+}
+
+@media (min-width: 768px) {
+    .button-container button {
+        flex: 1 1 calc(25% - 1rem); /* Each button takes one-fourth of the container width on larger screens */
+        max-width: calc(25% - 1rem);
+    }
+}
+
+
+
+
+
 
 
