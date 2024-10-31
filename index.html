@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-----------------  nav bar ---------------->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <title class="navbar-brand">留学生活模拟器</title>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">说明书</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+<div class="game-container">
+    <div id="year">
+        <h3 id="current-year"></h3>
+    </div>
+
+    <div id="month"></div>
+
+    <div id="options"></div>
+
+    <div id="statistic">
+        <div class="left-part">
+            <!--  statistic diagram -->
+        </div>
+        <div class="right-part">
+            <p>本月剩余需交作业数量：</p>
+            <p id="assignmentsDue"></p>
+            <br>
+            <p>已逾期作业数量：</p>
+            <p id="assignmentsOverdue"></p>
+        </div>
+    </div>
+
+</div>
+<script src="script.js"></script>
+</body>
+
+
+<!--------------------- footer ------------------------------------------->
+<footer class="bg-body-tertiary text-center text-lg-start">
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+        © All rights reserved. Made by
+        <a href="#">Constance</a>
+    </div>
+</footer>
+
+</html>
