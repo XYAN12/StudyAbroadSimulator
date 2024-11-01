@@ -1,4 +1,5 @@
-import { steps } from './Steps.js';
+import { steps } from './steps.js';
+import * as constants from './constants.js';
 
 let initialStatsChart;
 let playerStatsChart;
@@ -22,6 +23,16 @@ class Player {
         this.mentalHealth = getNormallyDistributedValue();
         this.socialSkills = getNormallyDistributedValue();
         this.luck = getNormallyDistributedValue();
+
+        this.yearsOfStudy = 1;
+        this.currentYearLevel = constants.yearLevel.PREPARATION;
+        this.yearlySchoolFee = constants.schoolYearlyFee.HIGH_SCHOOL_FEE;
+        this.rentFee = constants.rentMonthlyFee.HOMESTAY;
+        this.assignmentsDue = 0;
+        this.assignmentsOverdue = 0;
+
+        this.yearlyPocketMoney  = constants.generateYearlyPocketMoney(this.wealth);
+        this.money = this.yearlyPocketMoney;
     }
 }
 
@@ -138,8 +149,11 @@ function showStep(stepKey) {
 
 
     const step = steps[stepKey];
-    console.log(step);
-    document.getElementById("current-year").innerText = step.currentYear;
+    if(step.currentYear) {
+        document.getElementById("current-year").innerText = step.currentYear;
+    }else{
+        document.getElementById("current-year").innerText = "留学第" + player.yearsOfStudy + "年/" + player.currentYearLevel;
+    }
     document.getElementById("current-month").innerText = step.currentMonth;
 
     const optionsDiv = document.getElementById("options");
@@ -147,6 +161,7 @@ function showStep(stepKey) {
     optionsDiv.innerHTML = '';
 
     if (stepKey === "start"){
+        document.getElementById("leftMoney").innerText = "";
         destroyInitialChart()
         //destroy chart at the bottom as well
         if (playerStatsChart) {
@@ -154,17 +169,97 @@ function showStep(stepKey) {
             playerStatsChart = null;
         }
         player = new Player();
-        console.log(step.options);
     }
     else if (stepKey === "showInitialStatus"){
         showInitialStats()
+        document.getElementById("leftMoney").innerText = "$" + player.money.toString();
     }
     else if (stepKey === "selectDestination"){
         destroyInitialChart()
+    }else if (stepKey === "selectWhenStart") {
+        step.options.forEach(option => {
+            const button = document.createElement("button");
+            button.innerText = option.text;
+            button.onclick = () => {
+                switch (option.text) {
+                    case "高中开始":
+                        player.currentYearLevel = constants.yearLevel.YEAR_10;
+                        player.yearlySchoolFee = constants.schoolYearlyFee.HIGH_SCHOOL_FEE;
+                        break;
+                    case "本科开始":
+                        player.currentYearLevel = constants.yearLevel.BACHELOR_1;
+                        player.yearlySchoolFee = constants.schoolYearlyFee.BACHELOR_FEE;
+                        break;
+                    case "硕士开始":
+                        player.currentYearLevel = constants.yearLevel.MASTER_1;
+                        player.yearlySchoolFee = constants.schoolYearlyFee.MASTER_FEE;
+                        break;
+                }
+                showStep(option.nextStep);
+            };
+            optionsDiv.appendChild(button);
+        });
+
+        return;
+
+    } else if (stepKey === "selectRentType") {
+        let availableOptions = step.options;
+        if (
+            player.currentYearLevel === constants.yearLevel.YEAR_10 ||
+            player.currentYearLevel === constants.yearLevel.YEAR_11 ||
+            player.currentYearLevel === constants.yearLevel.YEAR_12
+        ) {
+            availableOptions = step.options.filter(option => option.text === "住寄宿家庭");
+        }
+
+        availableOptions.forEach(option => {
+            const button = document.createElement("button");
+            button.innerText = option.text;
+            button.onclick = () => {
+                switch (option.text) {
+                    case "住寄宿家庭":
+                        player.rentFee = constants.rentMonthlyFee.HOMESTAY;
+                        break;
+                    case "与人合租":
+                        player.rentFee = constants.rentMonthlyFee.APARTMENT;
+                        break;
+                    case "自己租房":
+                        player.rentFee = constants.rentMonthlyFee.STUDIO;
+                        break;
+                    case "直接买房":
+                        player.rentFee = constants.rentMonthlyFee.BUY_ONE;
+                        break;
+                }
+                const modal = document.getElementById("modal");
+                document.getElementById("yearly-school-fee").innerText = "您今年的学费是$" + player.yearlySchoolFee;
+                document.getElementById("monthly-rent-fee").innerText = "您今年每个月的房租是$" + player.rentFee;
+                document.getElementById("pocket-money").innerText = "您每年的零花钱是$" + player.yearlyPocketMoney;
+                player.money = player.money - player.yearlySchoolFee - player.rentFee*12;
+                document.getElementById("money-left").innerText = "您现在剩余的资产为$" + player.money.toString();
+                modal.style.display = "block";
+
+                // 添加模态框关闭逻辑
+                const closeModalButton = document.getElementById("modal-close");
+                closeModalButton.onclick = () => {
+                    modal.style.display = "none";
+
+
+
+                    showStep(option.nextStep);
+                };
+            }
+            optionsDiv.appendChild(button);
+        });
+
+        return;
     }
 
 
     step.options.forEach(option => {
+        if (stepKey !== "start") {
+            document.getElementById("leftMoney").innerText = "$" + player.money.toString();
+        }
+
         const button = document.createElement("button");
         button.innerText = option.text;
         button.onclick = () => {
