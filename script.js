@@ -1,4 +1,16 @@
+import { steps } from './Steps.js';
 
+let initialStatsChart;
+let playerStatsChart;
+let player;
+
+document.addEventListener("DOMContentLoaded", () => {
+    showStep("start");
+});
+
+/**
+ * player class
+ */
 class Player {
     constructor() {
         this.iq = getNormallyDistributedValue();
@@ -11,20 +23,6 @@ class Player {
         this.socialSkills = getNormallyDistributedValue();
         this.luck = getNormallyDistributedValue();
     }
-
-    showStats() {
-        console.log(`Player stats:
-        智商: ${this.iq},
-        情商: ${this.eq},
-        财富: ${this.wealth},
-        自理能力: ${this.ability},
-        英文水平: ${this.englishProficiency},
-        身体健康: ${this.physicalHealth},
-        心理健康: ${this.mentalHealth},
-        社交能力: ${this.socialSkills},
-        幸运值: ${this.luck}`);
-    }
-
 }
 
 /**
@@ -43,28 +41,30 @@ function getNormallyDistributedValue(mean = 50, stdDev = 15) {
     return Math.max(0, Math.min(100, value));
 }
 
-let player;
 
-document.addEventListener("DOMContentLoaded", () => {
-    player = new Player();
-    player.showStats();
-
-    showInitialStats();
-
-    //showDestinationOptions();
-});
-
+/**
+ * display larger stats radar diagram at the start
+ */
 function showInitialStats() {
     document.getElementById("current-year").innerText = "准备留学！";
     document.getElementById("current-month").innerText = "您的初始状态";
     const chart = document.getElementById("playerInitialStatsChart").getContext("2d");
-    generateStatsChart(chart);
+    initialStatsChart = generateStatsChart(chart);
+    if (initialStatsChart) {
+        const chartContainer = document.querySelector(".chart-container");
+        chartContainer.style.height = "400px";
+    }
 
     const ctx = document.getElementById("playerStatsChart").getContext("2d");
-    generateStatsChart(ctx);
+    playerStatsChart = generateStatsChart(ctx);
 
 }
 
+/**
+ * generate radar diagram to display player's stats
+ * @param ctx
+ * @returns {Chart}
+ */
 function generateStatsChart(ctx){
     const data = {
         labels: ['智商', '情商', '财富', '自理能力', '英文水平', '身体健康', '心理健康', '社交能力', '幸运值'],
@@ -118,33 +118,58 @@ function generateStatsChart(ctx){
         }
     };
 
-    new Chart(ctx, config);
+    return new Chart(ctx, config);
 }
 
-function showDestinationOptions() {
-    document.getElementById("current-year").innerText = "准备留学！";
-    document.getElementById("current-month").innerText = "请选择您的留学目的地：";
-
-    const optionsDiv = document.getElementById("options");
-    optionsDiv.innerHTML = "";
-
-    const australiaButton = document.createElement("button");
-    australiaButton.innerText = "澳大利亚";
-    australiaButton.onclick = () => selectDestination("澳大利亚");
-
-    const germanyButton = document.createElement("button");
-    germanyButton.innerText = "德国";
-    germanyButton.onclick = () => selectDestination("德国");
-
-    // Append buttons to optionsDiv
-    optionsDiv.appendChild(australiaButton);
-    optionsDiv.appendChild(germanyButton);
+/**
+ * destroy the radar digram
+ */
+function destroyInitialChart() {
+    if (initialStatsChart) {
+        initialStatsChart.destroy();
+        initialStatsChart = null;
+        const chartContainer = document.querySelector(".chart-container");
+        chartContainer.style.height = "0";
+    }
 }
 
-function selectDestination(destination) {
-    document.getElementById("current-year").innerText = "";
-    document.getElementById("month").innerText = "";
+
+function showStep(stepKey) {
+
+
+    const step = steps[stepKey];
+    console.log(step);
+    document.getElementById("current-year").innerText = step.currentYear;
+    document.getElementById("current-month").innerText = step.currentMonth;
 
     const optionsDiv = document.getElementById("options");
-    optionsDiv.innerHTML = `<p>您选择的目的地是：${destination}</p>`;
+
+    optionsDiv.innerHTML = '';
+
+    if (stepKey === "start"){
+        destroyInitialChart()
+        //destroy chart at the bottom as well
+        if (playerStatsChart) {
+            playerStatsChart.destroy();
+            playerStatsChart = null;
+        }
+        player = new Player();
+        console.log(step.options);
+    }
+    else if (stepKey === "showInitialStatus"){
+        showInitialStats()
+    }
+    else if (stepKey === "selectDestination"){
+        destroyInitialChart()
+    }
+
+
+    step.options.forEach(option => {
+        const button = document.createElement("button");
+        button.innerText = option.text;
+        button.onclick = () => {
+            showStep(option.nextStep);
+        };
+        optionsDiv.appendChild(button);
+    });
 }

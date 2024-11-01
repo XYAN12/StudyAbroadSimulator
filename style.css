@@ -107,6 +107,20 @@ button:hover {
     }
 }
 
+.chart-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.5s ease;
+}
+
+.chart-container.active {
+    height: 400px;
+}
+
 
 
 
