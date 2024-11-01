@@ -87,12 +87,26 @@ button:hover {
     background-color: #f0f0f0;
 }
 
-@media (min-width: 768px) {
+#playerStatsChart {
+    width: 50%;
+    height: auto;
+}
+
+/* 针对较小屏幕 (如手机) 的媒体查询 */
+@media screen and (max-width: 768px) {
+    #playerStatsChart {
+        width: 80%; /* 在屏幕宽度小于等于 768px 时，占父容器宽度的 80% */
+    }
+}
+
+/* 针对较大屏幕的按钮布局 */
+@media (min-width: 769px) {
     .button-container button {
-        flex: 1 1 calc(25% - 1rem); /* Each button takes one-fourth of the container width on larger screens */
+        flex: 1 1 calc(25% - 1rem); /* 每个按钮占四分之一宽度 */
         max-width: calc(25% - 1rem);
     }
 }
+
 
 
 

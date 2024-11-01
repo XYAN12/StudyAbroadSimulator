@@ -22,6 +22,7 @@
         </div>
     </nav>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 
@@ -39,15 +40,24 @@
             <h5 id="current-month"></h5>
         </div>
 
+        <div class="chart-container" style="width: 100%; max-width: 800px; margin: 0 auto;text-align: center">
+            <canvas id="playerInitialStatsChart"></canvas>
+        </div>
+
         <div style="padding-bottom: 30px"></div>
         <div id="options" class="button-container"></div>
 
         <div style="padding-bottom: 50px"></div>
         <div id="statistic">
             <div class="left-part">
-                <!--  statistic diagram -->
+                <div class="chart-container" style="width: 100%; max-width: 800px; margin: 0 auto;text-align: center">
+                    <canvas id="playerStatsChart"></canvas>
+                </div>
             </div>
             <div class="right-part">
+                <p>剩余金钱：</p>
+                <p id="leftMoney"></p>
+                <br>
                 <p>本月剩余需交作业数量：</p>
                 <p id="assignmentsDue"></p>
                 <br>
