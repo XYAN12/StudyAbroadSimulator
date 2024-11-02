@@ -56,9 +56,9 @@ button {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    min-width: 150px;
-    text-align: center;
-    flex-grow: 1; /* Allows buttons to grow if space is available */
+    /*min-width: 150px;*/
+    /*text-align: center;*/
+    /*flex-grow: 1; !* Allows buttons to grow if space is available *!*/
 }
 
 button:hover {
