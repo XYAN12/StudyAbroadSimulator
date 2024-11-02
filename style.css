@@ -29,10 +29,6 @@ footer {
     padding: 10px;
 }
 
-.left-part {
-    border-right: 2px solid black;
-}
-
 #current-year {
     text-align: center;
 }
@@ -140,6 +136,35 @@ button:hover {
     width: 80%;
     max-width: 300px;
     text-align: center;
+}
+
+.scroll-container {
+    display: flex;
+    overflow-x: auto; /* 启用水平滚动 */
+    scroll-snap-type: x mandatory; /* 可选：让每一部分自动对齐 */
+    width: 100%;
+    max-width: 100vw; /* 限制宽度在视口范围内 */
+}
+
+.left-part, .right-part {
+    min-width: 100vw; /* 每一部分占满视口宽度 */
+    scroll-snap-align: start; /* 可选：让部分开始时自动对齐 */
+    flex-shrink: 0; /* 防止内容被压缩 */
+    box-sizing: border-box;
+    padding: 20px; /* 可选：增加左右部分的内边距 */
+}
+
+.scroll-hint {
+    text-align: center;
+    font-size: 14px;
+    color: gray;
+    margin-bottom: 10px;
+    /*animation: fadeInOut 3s infinite;*/
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
 }
 
 

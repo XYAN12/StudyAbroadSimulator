@@ -76,11 +76,11 @@ function showInitialStats() {
  * @param ctx
  * @returns {Chart}
  */
-function generateStatsChart(ctx){
+function generateStatsChart(ctx) {
     const data = {
         labels: ['智商', '情商', '财富', '自理能力', '英文水平', '身体健康', '心理健康', '社交能力', '幸运值'],
         datasets: [{
-            label: '玩家统计',
+            label: '玩家状态',
             data: [
                 player.iq,
                 player.eq,
@@ -102,7 +102,6 @@ function generateStatsChart(ctx){
         }]
     };
 
-
     const config = {
         type: 'radar',
         data: data,
@@ -117,7 +116,10 @@ function generateStatsChart(ctx){
                     beginAtZero: true,
                     max: 100,
                     pointLabels: {
-                        display: true
+                        display: true,
+                        callback: function(label, index) {
+                            return `${label}: ${data.datasets[0].data[index]}`;
+                        }
                     },
                     ticks: {
                         display: false,
@@ -131,6 +133,7 @@ function generateStatsChart(ctx){
 
     return new Chart(ctx, config);
 }
+
 
 /**
  * destroy the radar digram

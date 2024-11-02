@@ -2,7 +2,7 @@ import * as constants from './constants.js';
 
 export const steps = {
     start: {
-        currentYear: constants.yearLevel.PREPARATION,
+        currentYear: "留学生活模拟器",
         currentMonth: "",
         options: [
             { text: "开始", nextStep:"showInitialStatus" },
