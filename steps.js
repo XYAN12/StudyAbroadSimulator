@@ -48,7 +48,7 @@ export const steps = {
     },
 
     selectHaveMealType:{
-        currentMonth:"你接下来六个月的的餐饮选择是......\n提示：不同选择可能对身心健康和花销产生不同影响",
+        currentMonth:"你接下来一年的的餐饮选择是......\n提示：不同选择可能对身心健康和花销产生不同影响",
         options: [
             {text: "跟随寄宿家庭", nextStep:"selectEvent" },
             {text: "自己做饭吃", nextStep:"selectEvent" },

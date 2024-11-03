@@ -1,5 +1,6 @@
 import { steps, events } from './steps.js';
 import * as constants from './constants.js';
+import {yearLevel} from "./constants.js";
 
 let initialStatsChart;
 let playerStatsChart;
@@ -259,6 +260,7 @@ function showStep(stepKey) {
 
         return;
     }else if(stepKey === "selectHaveMealType") {
+        updatePlayerStatus(player)
         let availableOptions = step.options;
 
         availableOptions.forEach(option => {
@@ -280,25 +282,25 @@ function showStep(stepKey) {
                         case "自己做饭吃":
                             player.physicalHealth += 5;
                             player.mentalHealth += 5;
-                            player.money -= 2000;
+                            player.money -= 4000;
                             break;
                         case "平价的饭店":
                             player.physicalHealth -= 10;
-                            player.money -= 5040;
+                            player.money -= 10080;
                             break;
                         case "高端的饭店":
                             player.physicalHealth -= 5;
                             player.mentalHealth += 8;
-                            player.money -= 10100;
+                            player.money -= 20200;
                             break;
                         case "泡面与水饺":
                             player.physicalHealth -= 3;
-                            player.money -= 3000;
+                            player.money -= 6000;
                             break;
                         case "麦门信徒":
                             player.physicalHealth -= 10;
                             player.mentalHealth += 10;
-                            player.money -= 5040;
+                            player.money -= 10080;
                             break;
                     }
 
@@ -360,7 +362,15 @@ function showEvents(player) {
                 updateMonthDisplay();
 
                 if (eventCount >= 12) {
-                    showStep("selectRentType");
+                    // determine graduate status
+                    if (player.currentYearLevel === constants.yearLevel.MASTER_2) {
+                        showHintModal("恭喜你研究生毕业了！", "end");
+                    } else {
+                        console.log("need to select rent type");
+                        player.yearsOfStudy += 1;
+                        constants.updateYearLevel(player);
+                        showStep("selectRentType");
+                    }
                 } else {
                     displayNextEvent();
                 }
@@ -369,7 +379,6 @@ function showEvents(player) {
         });
     }
 
-    // 开始展示事件
     displayNextEvent();
 }
 

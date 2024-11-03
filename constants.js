@@ -34,3 +34,35 @@ export function generateYearlyPocketMoney(wealth) {
     return Math.round(yearlyPocketMoney);
 }
 
+export const yearLevelIndex = [
+    yearLevel.PREPARATION,
+    yearLevel.YEAR_10,
+    yearLevel.YEAR_11,
+    yearLevel.YEAR_12,
+    yearLevel.BACHELOR_1,
+    yearLevel.BACHELOR_2,
+    yearLevel.BACHELOR_3,
+    yearLevel.MASTER_1,
+    yearLevel.MASTER_2
+];
+
+export function updateYearLevel(player) {
+    const currentIndex = yearLevelIndex.indexOf(player.currentYearLevel);
+
+    if (currentIndex < yearLevelIndex.length - 1) {
+        player.currentYearLevel = yearLevelIndex[currentIndex + 1];
+
+        if (player.currentYearLevel === yearLevel.YEAR_10 ||
+            player.currentYearLevel === yearLevel.YEAR_11 ||
+            player.currentYearLevel === yearLevel.YEAR_12) {
+            player.yearlySchoolFee = schoolYearlyFee.HIGH_SCHOOL_FEE;
+        } else if (player.currentYearLevel === yearLevel.BACHELOR_1 ||
+            player.currentYearLevel === yearLevel.BACHELOR_2 ||
+            player.currentYearLevel === yearLevel.BACHELOR_3) {
+            player.yearlySchoolFee = schoolYearlyFee.BACHELOR_FEE;
+        } else if (player.currentYearLevel === yearLevel.MASTER_1 ||
+            player.currentYearLevel === yearLevel.MASTER_2) {
+            player.yearlySchoolFee = schoolYearlyFee.MASTER_FEE;
+        }
+    }
+}
