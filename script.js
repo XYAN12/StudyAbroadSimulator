@@ -258,7 +258,59 @@ function showStep(stepKey) {
         });
 
         return;
-    }else if(stepKey === "selectEvent"){
+    }else if(stepKey === "selectHaveMealType") {
+        let availableOptions = step.options;
+
+        availableOptions.forEach(option => {
+            const button = document.createElement("button");
+            button.innerText = option.text;
+
+            if (option.text === "跟随寄宿家庭" && player.rentFee !== constants.rentMonthlyFee.HOMESTAY) {
+                button.classList.add("disabled-button");
+                button.onclick = () => showHintModal("需通过住寄宿家庭选择此项，可后续更改住宿选择。", "hint");
+            } else if (option.text === "自己做饭吃" && player.ability <= 70) {
+                button.classList.add("disabled-button");
+                button.onclick = () => showHintModal("能力值大于 70 才可选择自己做饭，" +
+                    "可后续通过学习做饭或其他事件来提高自理能力。", "hint");
+            } else {
+                button.onclick = () => {
+                    switch (option.text) {
+                        case "跟随寄宿家庭":
+                            break;
+                        case "自己做饭吃":
+                            player.physicalHealth += 5;
+                            player.mentalHealth += 5;
+                            player.money -= 2000;
+                            break;
+                        case "平价的饭店":
+                            player.physicalHealth -= 10;
+                            player.money -= 5040;
+                            break;
+                        case "高端的饭店":
+                            player.physicalHealth -= 5;
+                            player.mentalHealth += 8;
+                            player.money -= 10100;
+                            break;
+                        case "泡面与水饺":
+                            player.physicalHealth -= 3;
+                            player.money -= 3000;
+                            break;
+                        case "麦门信徒":
+                            player.physicalHealth -= 10;
+                            player.mentalHealth += 10;
+                            player.money -= 5040;
+                            break;
+                    }
+
+                    showStep(option.nextStep);
+                };
+            }
+
+            optionsDiv.appendChild(button);
+        });
+
+        return;
+    } else if(stepKey === "selectEvent"){
         updatePlayerStatus(player)
         showEvents(player);
 
@@ -338,19 +390,32 @@ function getRandomEvents(events, num = 6) {
 }
 
 
-function showEndModal(message) {
-    const modal = document.getElementById("end-modal");
-    const moneyLeftText = document.getElementById("end-description");
+function showHintModal(message, type) {
+    const modal = document.getElementById("hint-modal");
+    const moneyLeftText = document.getElementById("hint-description");
 
     moneyLeftText.innerText = message;
     modal.style.display = "block";
 
-    const closeModalButton = document.getElementById("end-modal-close");
+    const closeModalButton = document.getElementById("hint-modal-close");
+    const title = document.getElementById("title");
+
+    if(type === "hint"){
+        title.innerHTML = "提示";
+        closeModalButton.innerText = "继续";
+    }else{
+        title.innerHTML = "结局";
+        closeModalButton.innerText = "重开";
+    }
     closeModalButton.onclick = () => {
         modal.style.display = "none";
 
-        // start game again
-        showStep("start");
+        if(type === "hint"){
+            modal.style.display = "none";
+        }else{
+            showStep("start");
+        }
+
     };
 }
 
@@ -398,23 +463,23 @@ function calculateYearlyRentFee(player){
 
 function checkPlayerStats(player) {
     if (player.money <= 0) {
-        showEndModal("一分钱也没有了，已经没钱留学了。");
-    } else if (player.mentalHealth <= 0) {
-        showEndModal("心理健康达到了极限，无法继续学习。");
-    } else if (player.physicalHealth <= 0) {
-        showEndModal("身体状况不佳，无法继续留学生活。");
-    } else if (player.iq <= 0) {
-        showEndModal("智商水平太低，课程难度过大，学习无法继续。");
-    } else if (player.eq <= 0) {
-        showEndModal("情商过低，难以适应留学生活。");
-    } else if (player.ability <= 0) {
-        showEndModal("自理能力不足，无法在海外独立生活。");
-    } else if (player.englishProficiency <= 0) {
-        showEndModal("英语能力不足，无法继续留学。");
-    } else if (player.socialSkills <= 0) {
-        showEndModal("社交能力不足，难以在新的环境中生存。");
+        showHintModal("一分钱也没有了，已经没钱留学了。", "end");
+    } else if (player.mentalHealth <= 5) {
+        showHintModal("心理健康达到了极限，无法继续学习。", "end");
+    } else if (player.physicalHealth <= 5) {
+        showHintModal("身体状况不佳，无法继续留学生活。", "end");
+    } else if (player.iq <= 10) {
+        showHintModal("智商水平太低，课程难度过大，学习无法继续。", "end");
+    } else if (player.eq <= 5) {
+        showHintModal("情商过低，难以适应留学生活。", "end");
+    } else if (player.ability <= 10) {
+        showHintModal("自理能力不足，无法在海外独立生活。", "end");
+    } else if (player.englishProficiency <= 10) {
+        showHintModal("英语能力不足，无法继续留学。", "end");
+    } else if (player.socialSkills <=5) {
+        showHintModal("社交能力不足，难以在新的环境中生存。", "end");
     } else if (player.assignmentsOverdue >= 5){
-        showEndModal("太多作业没交，被劝退了。");
+        showHintModal("太多作业没交，被劝退了。", "end");
     }
 }
 

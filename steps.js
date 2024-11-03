@@ -39,11 +39,23 @@ export const steps = {
     selectRentType:{
         currentMonth: "你接下来一年的住房选择是......",
         options: [
-            { text: "住寄宿家庭", nextStep:"selectEvent" },
-            { text: "与人合租", nextStep:"selectEvent" },
-            { text: "自己租房", nextStep:"selectEvent" },
-            { text: "直接买房", nextStep:"selectEvent" },
-            { text: "已经买房", nextStep: "selectEvent"},
+            { text: "住寄宿家庭", nextStep:"selectHaveMealType" },
+            { text: "与人合租", nextStep:"selectHaveMealType" },
+            { text: "自己租房", nextStep:"selectHaveMealType" },
+            { text: "直接买房", nextStep:"selectHaveMealType" },
+            { text: "已经买房", nextStep: "selectHaveMealType"},
+        ]
+    },
+
+    selectHaveMealType:{
+        currentMonth:"你接下来六个月的的餐饮选择是......\n提示：不同选择可能对身心健康和花销产生不同影响",
+        options: [
+            {text: "跟随寄宿家庭", nextStep:"selectEvent" },
+            {text: "自己做饭吃", nextStep:"selectEvent" },
+            {text: "平价的饭店", nextStep:"selectEvent" },
+            {text: "高端的饭店", nextStep:"selectEvent" },
+            {text: "泡面与水饺", nextStep:"selectEvent" },
+            {text: "麦门信徒", nextStep:"selectEvent" },
         ]
     },
 

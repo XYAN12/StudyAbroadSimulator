@@ -35,6 +35,7 @@ footer {
 
 #month{
     text-align: center;
+    margin: 0 20px;
 }
 
 #options{
@@ -59,6 +60,23 @@ button {
 
 button:hover {
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.button-container button.disabled-button {
+    background: #f0f0f0;
+    color: black;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    border: 1px solid #ddd;
+    opacity: 0.7;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.button-container button.disabled-button:hover {
+    background: #e8e8e8;
+    color: #a0a0a0;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    transform: scale(1.02);
 }
 
 
